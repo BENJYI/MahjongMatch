@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Game View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="GameViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="orange button is hacked ** orange button sucks ** need to find new way of matching ** fix messy code" translatesAutoresizingMaskIntoConstraints="NO" id="Ubl-lI-q4E">
+                                <rect key="frame" x="640" y="25" width="91" height="384"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdy-gQ-6tA" customClass="BoardView">
+                                <rect key="frame" x="101" y="22" width="534" height="390"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hdy-gQ-6tA" secondAttribute="height" multiplier="1:1" id="C5h-ZH-28N"/>
+                                    <constraint firstAttribute="width" secondItem="hdy-gQ-6tA" secondAttribute="height" multiplier="16:11.7" id="ZEH-uy-oBW"/>
+                                    <constraint firstAttribute="width" secondItem="hdy-gQ-6tA" secondAttribute="height" multiplier="1:1" id="mkB-LS-OkV"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="C5h-ZH-28N"/>
+                                        <exclude reference="mkB-LS-OkV"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ubl-lI-q4E" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="50K-Xz-8oT"/>
+                            <constraint firstItem="hdy-gQ-6tA" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="IUA-Gq-1xA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ubl-lI-q4E" secondAttribute="trailing" constant="-11" id="LiX-UK-Dsq"/>
+                            <constraint firstItem="hdy-gQ-6tA" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="2" id="QMV-sF-zmP"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="hdy-gQ-6tA" secondAttribute="bottom" constant="2" id="TyY-ms-3hv"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Ubl-lI-q4E" secondAttribute="bottom" constant="5" id="brT-LR-Kmw"/>
+                            <constraint firstItem="Ubl-lI-q4E" firstAttribute="leading" secondItem="hdy-gQ-6tA" secondAttribute="trailing" constant="5" id="ecS-nF-aaY"/>
+                            <constraint firstAttribute="centerX" secondItem="hdy-gQ-6tA" secondAttribute="centerX" id="yJf-vH-2NI"/>
+                            <constraint firstItem="hdy-gQ-6tA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="zwN-3G-wY1"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="IUA-Gq-1xA"/>
+                                <exclude reference="zwN-3G-wY1"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="boardView" destination="hdy-gQ-6tA" id="Kn5-cN-N1U"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
