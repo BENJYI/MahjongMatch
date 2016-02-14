@@ -16,6 +16,8 @@
 @property (nonatomic, assign) int vectorDirection;
 @property (nonatomic, strong) NSArray *movingTiles;
 
+- (BOOL)isHorizontal;
+- (BOOL)isVertical;
 - (void)setPanLimitsWithEmptyTiles:(int)emptyTiles withDimensions:(CGPoint)tileDimensions;
 
 @end

@@ -168,10 +168,10 @@
         int vectorDirection;
         
         if (fabs(velocity.x) > fabs(velocity.y)) {
-            self.scrollView.direction = @"horizontal";
+            self.scrollView.direction = (velocity.x > 0) ? @"left" : @"right";
             vectorDirection = velocity.x / fabs(velocity.x);
         } else {
-            self.scrollView.direction = @"vertical";
+            self.scrollView.direction = (velocity.y > 0) ? @"up" : @"down";
             vectorDirection = velocity.y / fabs(velocity.y);
         }
         self.scrollView.vectorDirection = vectorDirection;
@@ -182,9 +182,9 @@
     CGPoint translation = [recognizer translationInView:self];
     CGPoint offset;
     
-    if ([self.scrollView.direction isEqualToString:@"horizontal"]) {
+    if (self.scrollView.isHorizontal) {
         offset = CGPointMake(-translation.x, 0);
-    } else if ([self.scrollView.direction isEqualToString:@"vertical"]) {
+    } else {
         offset = CGPointMake(0, -translation.y);
     }
     
@@ -202,7 +202,7 @@
     [tiles addObject:selectedTile];
 
     int tileCount, increment, minTag, maxTag;
-    if ([self.scrollView.direction isEqualToString:@"horizontal"]) {
+    if (self.scrollView.isHorizontal) {
         tileCount = 16;
         increment = 1,
         minTag = selectedTile.leadingTileTag;
@@ -253,7 +253,7 @@
     float length;
     int tagIncrement;
     
-    if ([self.scrollView.direction isEqualToString:@"horizontal"]) {
+    if (self.scrollView.isHorizontal) {
         panDistance = -self.scrollView.contentOffset.x;
         length = tileDimensions.x;
         tagIncrement = 1;
@@ -269,9 +269,9 @@
     
     for (TileView *tile in self.scrollView.movingTiles ) {
         
-        CGPoint newCenter = [self.scrollView.direction isEqualToString:@"horizontal"]
-        ? CGPointMake(tile.center.x + (tileOffset * length), tile.center.y)
-        : CGPointMake(tile.center.x, tile.center.y + (tileOffset * length));
+        CGPoint newCenter = self.scrollView.isHorizontal
+            ? CGPointMake(tile.center.x + (tileOffset * length), tile.center.y)
+            : CGPointMake(tile.center.x, tile.center.y + (tileOffset * length));
         
         tile.tag += tileOffset * tagIncrement;
         tile.center = newCenter;

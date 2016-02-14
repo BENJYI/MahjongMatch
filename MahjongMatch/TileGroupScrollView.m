@@ -22,8 +22,7 @@
     //   - A negative offset indicates a movement down or to the right
     //   - A positive offset indicates a movement up or to the left
     
-    CGFloat offset = [self.direction isEqualToString:@"horizontal"]
-    ? contentOffset.x : contentOffset.y;
+    CGFloat offset = self.isHorizontal ? contentOffset.x : contentOffset.y;
     
     if (offset > 0) {
         if (self.minPanLimit == 0) {
@@ -39,17 +38,31 @@
         }
     }
     
-    contentOffset = [self.direction isEqualToString:@"horizontal"]
-    ? CGPointMake(offset, 0)
-    : CGPointMake(0, offset);
+    contentOffset = self.isHorizontal ? CGPointMake(offset, 0) : CGPointMake(0, offset);
     
     [super setContentOffset:contentOffset];
 }
 
 - (void)setPanLimitsWithEmptyTiles:(int)emptyTiles withDimensions:(CGPoint)tileDimensions{
-    CGFloat length = [self.direction isEqualToString:@"horizontal"] ? tileDimensions.x : tileDimensions.y;
+    CGFloat length = self.isHorizontal ? tileDimensions.x : tileDimensions.y;
     self.minPanLimit = self.vectorDirection < 0 ? emptyTiles * length : 0;
     self.maxPanLimit = self.vectorDirection > 0 ? emptyTiles * length : 0;
+}
+
+- (BOOL)isHorizontal {
+    if ([self.direction isEqualToString:@"left"] || [self.direction isEqualToString:@"right"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)isVertical {
+    if ([self.direction isEqualToString:@"up"] || [self.direction isEqualToString:@"down"]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 /*
