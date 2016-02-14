@@ -190,6 +190,8 @@
     
     self.scrollView.contentOffset = offset;
     
+    NSLog(@"%@", self.scrollView.direction);
+    
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         [self updateTiles:rowTiles];
     }
@@ -396,6 +398,23 @@
             return NO;
         }
     }
+    
+    return YES;
+}
+
+- (BOOL)matchingTileExistsForTile:(TileView *)selectedTile {
+    int increment1, increment2, increment3;
+    if ([self.scrollView.direction isEqualToString:@"left"]) {
+        increment1 = 1; increment2 = 16; increment3 = -16;
+    } else if ([self.scrollView.direction isEqualToString:@"right"]) {
+        increment1 = -1; increment2 = 16; increment3 = -16;
+    } else if ([self.scrollView.direction isEqualToString:@"up"]) {
+        increment1 = 16; increment2 = 1; increment3 = -1;
+    } else if ([self.scrollView.direction isEqualToString:@"down"]) {
+        increment1 = -16; increment2 = 1; increment3 = -1;
+    }
+    
+    int numberOfMatchingTiles = 0; // Can go up to 3.
     
     return YES;
 }
