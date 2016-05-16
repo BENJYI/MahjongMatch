@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) UILabel *tileLabel;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) NSShadow *shsdadow;
 
 @end
 

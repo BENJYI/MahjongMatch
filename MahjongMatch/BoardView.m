@@ -190,10 +190,54 @@
     
     self.scrollView.contentOffset = offset;
     
-    NSLog(@"%@", self.scrollView.direction);
+// -------------------------------------------------------------------------
+// ----- REPEATED CODE FIX THIS --------------------------------------------
+// ----- (check in updateTiles) --------------------------------------------
+// -------------------------------------------------------------------------
+    float panDistance;
+    float length;
+    int tagIncrement;
     
+    if (self.scrollView.isHorizontal) {
+        panDistance = -self.scrollView.contentOffset.x;
+        length = tileDimensions.x;
+        tagIncrement = 1;
+    } else {
+        panDistance = -self.scrollView.contentOffset.y;
+        length = tileDimensions.y;
+        tagIncrement = 16;
+    }
+    
+    int tileOffset = round(panDistance / length);
+    int tempTag = tileOffset * tagIncrement + selectedTileTag;
+    NSLog(@"%d", tempTag);
+    
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+
     if (recognizer.state == UIGestureRecognizerStateEnded) {
-        [self updateTiles:rowTiles];
+        TileView *tempTile = [self viewWithTag:tempTag];
+        TileView *matchingTile = [self matchingTileExistsForTile:tempTile];
+        if (matchingTile) {
+            [self updateTiles:rowTiles];
+            [self matchSelectedTileWithTile:matchingTile];
+        } else {
+            self.scrollView.contentOffset = CGPointMake(0.0, 0.0);
+            [self returnTiles];
+        }
+    }
+}
+
+- (void)matchSelectedTileWithTile:(TileView *)matchingTile {
+    TileView *currentTile = [self viewWithTag:selectedTileTag];
+    [currentTile removeFromSuperview];
+    [matchingTile removeFromSuperview];
+    
+    clearedTiles += 2;
+    if (clearedTiles == 144) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Yaaaaaaay" message:@"You win!" delegate:self cancelButtonTitle:@"Sure thing" otherButtonTitles:nil];
+        [alert show];
     }
 }
 
@@ -250,6 +294,13 @@
     self.scrollView.movingTiles = tilesArray;
 }
 
+- (void)returnTiles {
+    for (TileView *tile in self.scrollView.movingTiles ) {
+        [tile removeFromSuperview];
+        [self addSubview:tile];
+    }
+}
+
 - (void)updateTiles:(NSArray *)tiles {
     float panDistance;
     float length;
@@ -278,9 +329,9 @@
         tile.tag += tileOffset * tagIncrement;
         tile.center = newCenter;
         
-        [tile removeFromSuperview];
-        [self addSubview:tile];
     }
+    
+    [self returnTiles];
     
     selectedTileTag += tileOffset * tagIncrement;
 }
@@ -402,21 +453,51 @@
     return YES;
 }
 
-- (BOOL)matchingTileExistsForTile:(TileView *)selectedTile {
-    int increment1, increment2, increment3;
-    if ([self.scrollView.direction isEqualToString:@"left"]) {
-        increment1 = 1; increment2 = 16; increment3 = -16;
-    } else if ([self.scrollView.direction isEqualToString:@"right"]) {
-        increment1 = -1; increment2 = 16; increment3 = -16;
-    } else if ([self.scrollView.direction isEqualToString:@"up"]) {
-        increment1 = 16; increment2 = 1; increment3 = -1;
-    } else if ([self.scrollView.direction isEqualToString:@"down"]) {
-        increment1 = -16; increment2 = 1; increment3 = -1;
-    }
+- (TileView *)matchingTileExistsForTile:(TileView *)selectedTile {
+    int increment = self.scrollView.isHorizontal ? 16 : 1;
+    int minTag = self.scrollView.isHorizontal ? selectedTile.leadingTileTag : selectedTile.topTileTag;
+    int maxTag = self.scrollView.isHorizontal ? selectedTile.trailingTileTag : selectedTile.bottomTileTag;
+//    if ([self.scrollView.direction isEqualToString:@"left"]) {
+//        increment1 = 1; increment2 = 16; increment3 = -16;
+//    } else if ([self.scrollView.direction isEqualToString:@"right"]) {
+//        increment1 = -1; increment2 = 16; increment3 = -16;
+//    } else if ([self.scrollView.direction isEqualToString:@"up"]) {
+//        increment1 = 16; increment2 = 1; increment3 = -1;
+//    } else if ([self.scrollView.direction isEqualToString:@"down"]) {
+//        increment1 = -16; increment2 = 1; increment3 = -1;
+//    }
     
     int numberOfMatchingTiles = 0; // Can go up to 3.
     
-    return YES;
+    
+    for (int i = selectedTileTag-increment; i <= minTag; i -= increment) {
+        TileView *matchingTile = [self viewWithTag:i];
+        if (matchingTile) {
+            
+            if ([matchingTile.tileType isEqualToString:selectedTile.tileType]) {
+                NSLog(@"%lu", matchingTile.tag);
+                return matchingTile;
+            } else {
+                return 0;
+            }
+        }
+        
+    }
+    
+    for (int i = selectedTileTag+increment; i <= maxTag; i += increment) {
+        TileView *matchingTile = [self viewWithTag:i];
+        if (matchingTile) {
+            NSLog(@"%lu", matchingTile.tag);
+            if ([matchingTile.tileType isEqualToString:selectedTile.tileType]) {
+                NSLog(@"%lu", matchingTile.tag);
+                return matchingTile;
+            } else {
+                return 0;
+            }
+        }
+    }
+    
+    return 0;
 }
 
 - (void)scanForMatchingTile:(TileView *)tile {
